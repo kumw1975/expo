@@ -13,7 +13,7 @@
     "prepare": "expo-module prepare",
     "prepublishOnly": "expo-module prepublishOnly",
     "expo-module": "expo-module",
-    "start": "react-native start --port 8090",
+    "start": "react-native start",
     "bundle": "./write_embedded_bundle.sh"
   },
   "repository": {
@@ -33,9 +33,15 @@
     "semver": "^7.3.5"
   },
   "devDependencies": {
+    "@expo/styleguide-native": "^0.4.0",
+    "@react-navigation/bottom-tabs": "^6.0.9",
+    "@react-navigation/native": "^6.0.6",
     "babel-preset-expo": "~8.5.1",
     "expo-module-scripts": "^2.0.0",
     "react": "17.0.1",
-    "react-native": "0.64.3"
+    "react-native": "0.64.3",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-screens": "^3.9.0",
+    "react-query": "^3.33.1"
   }
 }

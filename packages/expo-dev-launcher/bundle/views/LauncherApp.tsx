@@ -1,61 +1,62 @@
+import { HomeFilledIcon, SettingsFilledIcon } from '@expo/styleguide-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
-import { StyledView } from '../components/Views';
+import { darkNavigationTheme, lightNavigationTheme } from '../components/redesign/theme';
 import { useTheme } from '../hooks/useThemeName';
-import LauncherMainScreen from '../screens/LauncherMainScreen';
-import {
-  isDevMenuAvailable,
-  isLoggedInAsync,
-  addUserLoginListener,
-  addUserLogoutListener,
-} from './../DevMenu';
+import { UserContextProvider } from '../hooks/useUserContext';
+import { HomeScreen } from '../screens/HomeScreen';
+import { SettingsScreen } from '../screens/SettingsScreen';
 
-function LauncherApp(props) {
-  const [isUserLoggedIn, setIsUserLoggedIn] = React.useState(false);
-  const [colors, isDark] = useTheme();
 
-  React.useEffect(() => {
-    let onLogin;
-    let onLogout;
+const Tab = createBottomTabNavigator();
 
-    if (isDevMenuAvailable) {
-      onLogin = addUserLoginListener(() => setIsUserLoggedIn(true));
-      onLogout = addUserLogoutListener(() => setIsUserLoggedIn(false));
-      isLoggedInAsync().then(isUserLogin => {
-        setIsUserLoggedIn(isUserLogin);
-      });
-    }
+type LauncherAppProps = {
+  isSimulator?: boolean;
+};
 
-    return () => {
-      onLogin?.remove();
-      onLogout?.remove();
-    };
-  });
+const queryClient = new QueryClient();
 
-  const backgroundColor = colors.background;
+function LauncherApp(props: LauncherAppProps) {
+  const [, isDark] = useTheme();
+
   const statusBarContent = isDark ? 'light-content' : 'dark-content';
 
   return (
-    <SafeAreaView style={[styles.rootView, { backgroundColor }]}>
-      <StyledView style={styles.rootView}>
+    <QueryClientProvider client={queryClient}>
+      <UserContextProvider>
         <StatusBar barStyle={statusBarContent} />
-        <LauncherMainScreen {...props} isUserLoggedIn={isUserLoggedIn} />
-      </StyledView>
-    </SafeAreaView>
+
+        <NavigationContainer theme={isDark ? darkNavigationTheme : lightNavigationTheme}>
+          <Tab.Navigator>
+            <Tab.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                tabBarIcon: HomeFilledIcon,
+                tabBarIconStyle: { transform: [{ scale: 0.85 }] },
+              }}
+            />
+            <Tab.Screen
+              name="Settings"
+              component={SettingsScreen}
+              options={{
+                tabBarIcon: SettingsFilledIcon,
+                tabBarIconStyle: { transform: [{ scale: 0.85 }] },
+              }}
+            />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </UserContextProvider>
+    </QueryClientProvider>
   );
 }
 
-export default class LauncherRootApp extends React.PureComponent<any, any> {
+export default class LauncherRootApp extends React.PureComponent<LauncherAppProps> {
   render() {
     return <LauncherApp {...this.props} />;
   }
 }
-
-const styles = StyleSheet.create({
-  rootView: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-});
