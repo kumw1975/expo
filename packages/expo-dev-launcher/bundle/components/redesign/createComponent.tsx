@@ -73,14 +73,13 @@ export function createComponent<T, O extends Options<T>>(
     ) => {
       const style = styleFn(props);
       const selectorStyle = useSelectors(config.selectors, props);
-
       const Element = props.as || component;
 
       return (
         <Element
           {...props}
           {...config.props}
-          style={[style, props.style, selectorStyle]}
+          style={StyleSheet.flatten([style, props.style, selectorStyle])}
           ref={ref}
         />
       );

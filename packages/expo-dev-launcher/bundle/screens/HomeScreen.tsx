@@ -28,7 +28,7 @@ export function HomeScreen(props: HomeScreenProps) {
 
   return (
     <ScrollView>
-      <View py="small">
+      <View py="large">
         <Row px="medium" align="center">
           <View px="small">
             <TerminalIcon />
@@ -77,7 +77,7 @@ export function HomeScreen(props: HomeScreenProps) {
               </>
             )}
 
-            <URLDropdown onSubmit={onUrlSubmit} />
+            <UrlDropdown onSubmit={onUrlSubmit} />
           </View>
         </View>
       </View>
@@ -86,11 +86,11 @@ export function HomeScreen(props: HomeScreenProps) {
 }
 
 type LocalPackagersListProps = {
-  packagers: Packager[];
+  packagers?: Packager[];
   onPackagerPress: (packager: Packager) => void;
 };
 
-function LocalPackagersList({ packagers, onPackagerPress }: LocalPackagersListProps) {
+function LocalPackagersList({ packagers = [], onPackagerPress }: LocalPackagersListProps) {
   if (packagers.length === 0) {
     return null;
   }
@@ -115,18 +115,25 @@ function LocalPackagersList({ packagers, onPackagerPress }: LocalPackagersListPr
   );
 }
 
-type URLDropdownProps = {
+type UrlDropdownProps = {
   onSubmit: (url: string) => void;
 };
 
-function URLDropdown(props: URLDropdownProps) {
+function UrlDropdown({ onSubmit }: UrlDropdownProps) {
   const theme = useExpoTheme();
   const ref = React.useRef<NativeTextInput>();
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
 
   const rotate = open ? '0deg' : '-90deg';
-  const arrowStyle = { transform: [{ translateX: -3 }, { rotate }] };
+  // slight visual adjustment for centering icon
+  const translateX = -3;
+  const arrowStyle = { transform: [{ translateX }, { rotate }] };
+
+  function onConnectPress() {
+    onSubmit(inputValue);
+    ref.current.blur();
+  }
 
   return (
     <View padding="medium">
@@ -153,7 +160,12 @@ function URLDropdown(props: URLDropdownProps) {
 
           <Spacer.Vertical size="medium" />
 
-          <Button bg="tertiary" shadow="button" rounded="medium" py="small">
+          <Button
+            bg="tertiary"
+            shadow="button"
+            rounded="medium"
+            py="small"
+            onPress={onConnectPress}>
             <Text align="center" weight="semibold" button="tertiary">
               Connect
             </Text>

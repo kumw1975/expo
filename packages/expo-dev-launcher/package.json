@@ -36,6 +36,8 @@
     "@expo/styleguide-native": "^0.4.0",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
+    "@testing-library/jest-native": "^4.0.4",
+    "@testing-library/react-native": "^8.0.0",
     "babel-preset-expo": "~8.5.1",
     "expo-module-scripts": "^2.0.0",
     "react": "17.0.1",
@@ -43,5 +45,11 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
     "react-query": "^3.33.1"
+  },
+  "jest": {
+    "preset": "@testing-library/react-native",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
   }
 }
