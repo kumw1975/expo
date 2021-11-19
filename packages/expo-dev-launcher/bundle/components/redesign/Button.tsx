@@ -12,13 +12,6 @@ export const Button = create(RNPressable, {
   },
 
   variants: {
-    align: {
-      row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-      },
-    },
-
     bg: {
       primary: { backgroundColor: lightTheme.button.primary.background },
       secondary: { backgroundColor: lightTheme.button.secondary.background },

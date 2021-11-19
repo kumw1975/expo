@@ -1,46 +1,31 @@
-import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import * as React from 'react';
-import { QueryClient } from 'react-query';
 
 import * as DevLauncher from '../../DevLauncherInternal';
-import { AppProviders } from '../../components/AppProviders';
-import { Packager } from '../../functions/getLocalPackagersAsync';
+import { getLocalPackagersAsync, Packager } from '../../functions/getLocalPackagersAsync';
+import { render, waitFor, fireEvent, act } from '../../test-utils';
 import { HomeScreen, HomeScreenProps } from '../HomeScreen';
 
-const api = require('../../functions/getLocalPackagersAsync');
 jest.mock('../../functions/getLocalPackagersAsync');
-jest.mock('../../DevLauncherInternal', () => {
-  return {
-    loadApp: jest.fn(),
-  };
-});
+jest.mock('../../DevLauncherInternal');
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
+const mockGetLocalPackagersAsync = getLocalPackagersAsync as jest.Mock;
+
+function mockGetPackagersResponse(response: Packager[]) {
+  return mockGetLocalPackagersAsync.mockResolvedValueOnce(response);
+}
 
 const packagerInstructionsRegex = /start a local development server with/i;
 const fetchingPackagersRegex = /searching for local servers/i;
 const refetchPackagersRegex = /refetch local servers/i;
 const textInputToggleRegex = /enter url manually/i;
 
-const wrapper = ({ children }) => <AppProviders queryClient={queryClient}>{children}</AppProviders>;
-
 test('displays instructions on starting packager when none are found', async () => {
-  api.getLocalPackagersAsync = jest.fn().mockResolvedValue([]);
-
   const { getByText } = await renderHomeScreen();
 
   await waitFor(() => getByText(packagerInstructionsRegex));
 });
 
 test('displays refetch button', async () => {
-  api.getLocalPackagersAsync = jest.fn().mockResolvedValue([]);
-
   const { getByText } = await renderHomeScreen();
 
   await waitFor(() => getByText(refetchPackagersRegex));
@@ -54,7 +39,7 @@ test('fetching local packagers on mount', async () => {
     source: 'test',
   };
 
-  api.getLocalPackagersAsync = jest.fn().mockResolvedValue([fakeLocalPackager]);
+  mockGetPackagersResponse([fakeLocalPackager]);
 
   const { getByText } = await renderHomeScreen();
 
@@ -62,8 +47,6 @@ test('fetching local packagers on mount', async () => {
 });
 
 test('refetching local packagers on button press', async () => {
-  api.getLocalPackagersAsync = jest.fn().mockResolvedValue([]);
-
   const { getByText, refetch } = await renderHomeScreen({
     refetchPollInterval: 0,
     refetchPollAmount: 2,
@@ -76,35 +59,34 @@ test('refetching local packagers on button press', async () => {
     source: 'test',
   };
 
-  api.getLocalPackagersAsync = jest.fn().mockResolvedValue([fakeLocalPackager]);
+  mockGetLocalPackagersAsync.mockClear();
+  mockGetPackagersResponse([fakeLocalPackager]);
   expect(() => getByText(fakeLocalPackager.description)).toThrow();
-  expect(api.getLocalPackagersAsync).not.toHaveBeenCalled();
+  expect(getLocalPackagersAsync).not.toHaveBeenCalled();
 
   await refetch();
   expect(getByText(fetchingPackagersRegex));
-  expect(api.getLocalPackagersAsync).toHaveBeenCalled();
+  expect(getLocalPackagersAsync).toHaveBeenCalled();
 
   await waitFor(() => getByText(fakeLocalPackager.description));
 });
 
 test('refetching enabled after polling is completed', async () => {
-  api.getLocalPackagersAsync = jest.fn().mockResolvedValue([]);
-
   const { getByText, refetch } = await renderHomeScreen({
     refetchPollAmount: 1,
     refetchPollInterval: 0,
   });
 
-  api.getLocalPackagersAsync.mockClear();
+  mockGetLocalPackagersAsync.mockClear();
   await refetch();
-  expect(api.getLocalPackagersAsync).toHaveBeenCalledTimes(1);
+  expect(getLocalPackagersAsync).toHaveBeenCalledTimes(1);
 
   // ensure button is disabled when fetching
   await act(async () => fireEvent.press(getByText(fetchingPackagersRegex)));
-  expect(api.getLocalPackagersAsync).toHaveBeenCalledTimes(1);
+  expect(getLocalPackagersAsync).toHaveBeenCalledTimes(1);
 
   await refetch();
-  expect(api.getLocalPackagersAsync).toHaveBeenCalledTimes(2);
+  expect(getLocalPackagersAsync).toHaveBeenCalledTimes(2);
 });
 
 test('select packager by entered url', async () => {
@@ -133,10 +115,11 @@ test('select packager from packager list', async () => {
     source: 'test',
   };
 
-  api.getLocalPackagersAsync = jest.fn().mockResolvedValue([fakeLocalPackager]);
+  mockGetPackagersResponse([fakeLocalPackager]);
 
   const { getByText } = await renderHomeScreen();
-  await waitFor(() => getByText(refetchPackagersRegex));
+
+  await waitFor(() => getByText(fakeLocalPackager.description));
 
   fireEvent.press(getByText(fakeLocalPackager.description));
   expect(DevLauncher.loadApp).toHaveBeenCalled();
@@ -144,9 +127,7 @@ test('select packager from packager list', async () => {
 });
 
 async function renderHomeScreen(props?: HomeScreenProps) {
-  const { getByText, ...fns } = render(<HomeScreen {...props} />, {
-    wrapper,
-  });
+  const { getByText, ...fns } = render(<HomeScreen {...props} />);
 
   await waitFor(() => getByText(packagerInstructionsRegex));
 

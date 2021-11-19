@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Packager } from '../../functions/getLocalPackagersAsync';
 import { Button } from './Button';
 import { Text } from './Text';
-import { Divider, Spacer, StatusIndicator, View } from './View';
+import { Divider, Row, Spacer, StatusIndicator, View } from './View';
 
 type LocalPackagersListProps = {
   packagers?: Packager[];
@@ -21,12 +21,14 @@ export function LocalPackagersList({ packagers = [], onPackagerPress }: LocalPac
       {packagers.map((packager) => {
         return (
           <View key={packager.description}>
-            <Button align="row" padding="medium" onPress={() => onPackagerPress(packager)}>
-              <StatusIndicator size="small" status="success" />
-              <Spacer.Horizontal size="small" />
-              <Text>{packager.description}</Text>
-              <Spacer.Horizontal size="flex" />
-              <ChevronDownIcon style={{ transform: [{ rotate: '-90deg' }] }} />
+            <Button onPress={() => onPackagerPress(packager)}>
+              <Row align="center" padding="medium">
+                <StatusIndicator size="small" status="success" />
+                <Spacer.Horizontal size="small" />
+                <Text>{packager.description}</Text>
+                <Spacer.Horizontal size="flex" />
+                <ChevronDownIcon style={{ transform: [{ rotate: '-90deg' }] }} />
+              </Row>
             </Button>
             <Divider />
           </View>

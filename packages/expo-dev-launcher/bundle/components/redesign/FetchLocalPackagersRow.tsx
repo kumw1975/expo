@@ -5,7 +5,7 @@ import { useExpoTheme } from '../../hooks/useExpoTheme';
 import { Button } from './Button';
 import { PulseIndicator } from './PulseIndicator';
 import { Text } from './Text';
-import { Spacer } from './View';
+import { Row, Spacer } from './View';
 
 type FetchLocalPackagersRowProps = {
   isFetching: boolean;
@@ -20,14 +20,16 @@ export function FetchLocalPackagersRow({
   const backgroundColor = isFetching ? theme.status.info : theme.status.default;
 
   return (
-    <Button padding="medium" align="row" onPress={onRefetchPress} disabled={isFetching}>
-      <PulseIndicator isActive={isFetching} color={backgroundColor} />
-      <Spacer.Horizontal size="small" />
-      <Text size="large">
-        {isFetching ? 'Searching for local servers...' : 'Refetch local servers'}
-      </Text>
-      <Spacer.Vertical size="flex" />
-      {!isFetching && <RefreshIcon size={16} />}
+    <Button onPress={onRefetchPress} disabled={isFetching}>
+      <Row align="center" padding="medium">
+        <PulseIndicator isActive={isFetching} color={backgroundColor} />
+        <Spacer.Horizontal size="small" />
+        <Text size="large">
+          {isFetching ? 'Searching for local servers...' : 'Refetch local servers'}
+        </Text>
+        <Spacer.Horizontal size="flex" />
+        {!isFetching && <RefreshIcon size={16} />}
+      </Row>
     </Button>
   );
 }
