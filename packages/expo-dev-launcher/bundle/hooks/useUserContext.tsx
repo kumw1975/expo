@@ -15,21 +15,21 @@ export function UserContextProvider(props: React.PropsWithChildren<any>) {
   const [isUserLoggedIn, setIsUserLoggedIn] = React.useState(false);
 
   React.useEffect(() => {
-    // let onLogin;
-    // let onLogout;
+    let onLogin;
+    let onLogout;
 
-    // if (isDevMenuAvailable) {
-    //   onLogin = addUserLoginListener(() => setIsUserLoggedIn(true));
-    //   onLogout = addUserLogoutListener(() => setIsUserLoggedIn(false));
-    //   isLoggedInAsync().then((isUserLogin) => {
-    //     setIsUserLoggedIn(isUserLogin);
-    //   });
-    // }
+    if (isDevMenuAvailable) {
+      onLogin = addUserLoginListener(() => setIsUserLoggedIn(true));
+      onLogout = addUserLogoutListener(() => setIsUserLoggedIn(false));
+      isLoggedInAsync().then((isUserLogin) => {
+        setIsUserLoggedIn(isUserLogin);
+      });
+    }
 
-    // return () => {
-    //   onLogin?.remove();
-    //   onLogout?.remove();
-    // };
+    return () => {
+      onLogin?.remove();
+      onLogout?.remove();
+    };
   });
 
   return <UserContext.Provider value={{ isUserLoggedIn }}>{props.children}</UserContext.Provider>;

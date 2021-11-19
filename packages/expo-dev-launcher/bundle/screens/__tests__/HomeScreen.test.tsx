@@ -6,7 +6,6 @@ import { render, waitFor, fireEvent, act } from '../../test-utils';
 import { HomeScreen, HomeScreenProps } from '../HomeScreen';
 
 jest.mock('../../functions/getLocalPackagersAsync');
-jest.mock('../../DevLauncherInternal');
 
 const mockGetLocalPackagersAsync = getLocalPackagersAsync as jest.Mock;
 
