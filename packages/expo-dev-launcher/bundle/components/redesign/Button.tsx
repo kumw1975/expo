@@ -1,10 +1,10 @@
 import { lightTheme, darkTheme, borderRadius, shadows } from '@expo/styleguide-native';
 import { Pressable as RNPressable } from 'react-native';
+import { create } from 'react-native-primitives';
 
-import { createComponent } from './createComponent';
 import { scale } from './theme';
 
-export const Button = createComponent(RNPressable, {
+export const Button = create(RNPressable, {
   base: {},
 
   props: {
@@ -25,6 +25,7 @@ export const Button = createComponent(RNPressable, {
       tertiary: { backgroundColor: lightTheme.button.tertiary.background },
       ghost: { backgroundColor: lightTheme.button.ghost.background },
       transparent: { backgroundColor: lightTheme.button.transparent.background },
+      disabled: { backgroundColor: lightTheme.status.default },
     },
 
     border: {
@@ -72,6 +73,7 @@ export const Button = createComponent(RNPressable, {
         tertiary: { backgroundColor: darkTheme.button.tertiary.background },
         ghost: { backgroundColor: darkTheme.button.ghost.background },
         transparent: { backgroundColor: darkTheme.button.transparent.background },
+        disabled: { backgroundColor: darkTheme.status.default },
       },
     },
   },

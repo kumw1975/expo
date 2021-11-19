@@ -23,7 +23,7 @@ export async function queryDevSessionsAsync(): Promise<any> {
 }
 
 export async function isLoggedInAsync(): Promise<boolean> {
-  return await DevMenu.isLoggedInAsync();
+  return await NativeModules.ExpoDevMenu.isLoggedInAsync();
 }
 
 export async function openProfile() {

@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-import { useQuery } from 'react-query';
 
 const baseAddress = Platform.select({
   ios: 'http://localhost',
@@ -15,11 +14,7 @@ export type Packager = {
   hideImage: boolean;
 };
 
-async function getLocalPackagersAsync(isSimulator?: boolean): Promise<Packager[]> {
-  if (!isSimulator) {
-    return [];
-  }
-
+export async function getLocalPackagersAsync(): Promise<Packager[]> {
   const onlinePackagers: Packager[] = [];
 
   for (const port of portsToCheck) {
@@ -38,10 +33,4 @@ async function getLocalPackagersAsync(isSimulator?: boolean): Promise<Packager[]
   }
 
   return onlinePackagers;
-}
-
-export function useLocalPackagers(isSimulator: boolean) {
-  return useQuery('local-packagers', () => getLocalPackagersAsync(isSimulator), {
-    retry: 5,
-  });
 }

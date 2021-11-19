@@ -1,9 +1,8 @@
 import { darkTheme, lightTheme } from '@expo/styleguide-native';
 import { Text as RNText, TextInput as RNTextInput } from 'react-native';
+import { create } from 'react-native-primitives';
 
-import { createComponent } from './createComponent';
-
-export const Heading = createComponent(RNText, {
+export const Heading = create(RNText, {
   base: {
     fontSize: 22,
     lineHeight: 28,
@@ -67,7 +66,7 @@ export const Heading = createComponent(RNText, {
   },
 });
 
-export const Text = createComponent(RNText, {
+export const Text = create(RNText, {
   base: {
     fontWeight: 'normal',
     color: lightTheme.text.default,
@@ -153,7 +152,7 @@ export const Text = createComponent(RNText, {
   },
 });
 
-export const TextInput = createComponent(RNTextInput, {
+export const TextInput = create(RNTextInput, {
   base: {
     fontWeight: 'normal',
     color: lightTheme.text.default,

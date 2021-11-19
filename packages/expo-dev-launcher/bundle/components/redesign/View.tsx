@@ -1,10 +1,10 @@
 import { lightTheme, darkTheme, shadows, borderRadius, iconSize } from '@expo/styleguide-native';
 import { View as RNView } from 'react-native';
+import { create } from 'react-native-primitives';
 
-import { createComponent } from './createComponent';
-import { scale } from './theme';
+import { scale, padding, margin } from './theme';
 
-export const View = createComponent(RNView, {
+export const View = create(RNView, {
   variants: {
     flex: {
       '1': { flex: 1 },
@@ -14,8 +14,9 @@ export const View = createComponent(RNView, {
     bg: {
       default: { backgroundColor: lightTheme.background.default },
       secondary: { backgroundColor: lightTheme.background.secondary },
-      info: { backgroundColor: lightTheme.status.info },
-      success: { backgroundColor: lightTheme.status.success },
+      success: { backgroundColor: lightTheme.background.success },
+      warning: { backgroundColor: lightTheme.background.warning },
+      error: { backgroundColor: lightTheme.background.error },
     },
 
     border: {
@@ -38,15 +39,9 @@ export const View = createComponent(RNView, {
     },
 
     width: {
-      micro: {
-        width: iconSize.micro,
-      },
-      tiny: {
-        width: iconSize.tiny,
-      },
-      small: {
-        width: iconSize.small,
-      },
+      micro: { width: iconSize.micro },
+      tiny: { width: iconSize.tiny },
+      small: { width: iconSize.small },
     },
 
     height: {
@@ -55,26 +50,8 @@ export const View = createComponent(RNView, {
       small: { height: iconSize.small },
     },
 
-    padding: {
-      tiny: { padding: scale.tiny },
-      small: { padding: scale.small },
-      medium: { padding: scale.medium },
-      large: { padding: scale.large },
-    },
-
-    px: {
-      tiny: { paddingHorizontal: scale.tiny },
-      small: { paddingHorizontal: scale.small },
-      medium: { paddingHorizontal: scale.medium },
-      large: { paddingHorizontal: scale.large },
-    },
-
-    py: {
-      tiny: { paddingVertical: scale.tiny },
-      small: { paddingVertical: scale.small },
-      medium: { paddingVertical: scale.medium },
-      large: { paddingVertical: scale.large },
-    },
+    ...padding,
+    ...margin,
   },
 
   selectors: {
@@ -82,17 +59,23 @@ export const View = createComponent(RNView, {
       bg: {
         default: { backgroundColor: darkTheme.background.default },
         secondary: { backgroundColor: darkTheme.background.secondary },
-        info: { backgroundColor: darkTheme.status.info },
+        success: { backgroundColor: darkTheme.background.success },
+        warning: { backgroundColor: darkTheme.background.warning },
+        error: { backgroundColor: darkTheme.background.error },
       },
 
       border: {
         default: { borderColor: darkTheme.border.default, borderWidth: 1 },
       },
     },
+
+    light: {
+      bg: {},
+    },
   },
 });
 
-export const Row = createComponent(RNView, {
+export const Row = create(RNView, {
   base: {
     flexDirection: 'row',
   },
@@ -104,33 +87,16 @@ export const Row = createComponent(RNView, {
       end: { alignItems: 'flex-end' },
     },
 
-    padding: {
-      tiny: { padding: scale.tiny },
-      small: { padding: scale.small },
-      medium: { padding: scale.medium },
-      large: { padding: scale.large },
-    },
-
-    px: {
-      tiny: { paddingHorizontal: scale.tiny },
-      small: { paddingHorizontal: scale.small },
-      medium: { paddingHorizontal: scale.medium },
-      large: { paddingHorizontal: scale.large },
-    },
-
-    py: {
-      tiny: { paddingVertical: scale.tiny },
-      small: { paddingVertical: scale.small },
-      medium: { paddingVertical: scale.medium },
-      large: { paddingVertical: scale.large },
-    },
+    ...padding,
+    ...margin,
   },
 });
 
-const Horizontal = createComponent(RNView, {
+const Horizontal = create(RNView, {
   variants: {
     size: {
       flex: { flex: 1 },
+      micro: { width: scale.micro },
       tiny: { width: scale.tiny },
       small: { width: scale.small },
       medium: { width: scale.medium },
@@ -139,10 +105,11 @@ const Horizontal = createComponent(RNView, {
   },
 });
 
-const Vertical = createComponent(RNView, {
+const Vertical = create(RNView, {
   variants: {
     size: {
       flex: { flex: 1 },
+      micro: { height: scale.micro },
       tiny: { height: scale.tiny },
       small: { height: scale.small },
       medium: { height: scale.medium },
@@ -156,7 +123,7 @@ export const Spacer = {
   Horizontal,
 };
 
-export const Divider = createComponent(RNView, {
+export const Divider = create(RNView, {
   base: {
     borderWidth: 0.5,
     borderColor: lightTheme.border.default,
@@ -169,31 +136,50 @@ export const Divider = createComponent(RNView, {
       heavy: { borderWidth: 2 },
     },
 
-    margin: {
-      tiny: { margin: scale.tiny },
-      small: { margin: scale.small },
-      medium: { margin: scale.medium },
-      large: { margin: scale.large },
-    },
-
-    mx: {
-      tiny: { marginHorizontal: scale.tiny },
-      small: { marginHorizontal: scale.small },
-      medium: { marginHorizontal: scale.medium },
-      large: { marginHorizontal: scale.large },
-    },
-
-    my: {
-      tiny: { marginVertical: scale.tiny },
-      small: { marginVertical: scale.small },
-      medium: { marginVertical: scale.medium },
-      large: { marginVertical: scale.large },
-    },
+    ...margin,
   },
 
   selectors: {
     dark: {
       borderColor: darkTheme.border.default,
+    },
+  },
+});
+
+export const StatusIndicator = create(RNView, {
+  base: {
+    backgroundColor: lightTheme.status.default,
+    borderRadius: 9999,
+  },
+
+  variants: {
+    status: {
+      info: { backgroundColor: lightTheme.status.info },
+      success: { backgroundColor: lightTheme.status.success },
+      warning: { backgroundColor: lightTheme.status.warning },
+      error: { backgroundColor: lightTheme.status.error },
+      default: { backgroundColor: lightTheme.status.default },
+    },
+
+    size: {
+      small: {
+        width: scale.small,
+        height: scale.small,
+      },
+      medium: {
+        width: scale.medium,
+        height: scale.medium,
+      },
+    },
+  },
+
+  selectors: {
+    dark: {
+      info: { backgroundColor: darkTheme.status.info },
+      success: { backgroundColor: darkTheme.status.success },
+      warning: { backgroundColor: darkTheme.status.warning },
+      error: { backgroundColor: darkTheme.status.error },
+      default: { backgroundColor: darkTheme.status.default },
     },
   },
 });
