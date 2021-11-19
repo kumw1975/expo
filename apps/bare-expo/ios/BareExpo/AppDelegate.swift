@@ -22,7 +22,7 @@ class AppDelegate: ExpoAppDelegate {
   var bridge: RCTBridge?
   var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
-  let useDevClient: Bool = true
+  let useDevClient: Bool = false
   
   override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     initializeFlipper(with: application)

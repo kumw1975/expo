@@ -1,5 +1,6 @@
 import { AppRegistry } from 'react-native';
 
-import LauncherApp from './views/LauncherApp';
+// import LauncherApp from './views/LauncherApp';
+import { App } from './App';
 
-AppRegistry.registerComponent('main', () => LauncherApp);
+AppRegistry.registerComponent('main', () => App);
