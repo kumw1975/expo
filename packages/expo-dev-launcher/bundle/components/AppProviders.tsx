@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClientProvider, QueryClient } from 'react-query';
 
 import { useTheme } from '../hooks/useThemeName';
@@ -22,11 +23,12 @@ export function AppProviders({
   return (
     <QueryClientProvider client={queryClient}>
       <UserContextProvider>
-        <StatusBar barStyle={statusBarContent} />
-
-        <NavigationContainer theme={isDark ? darkNavigationTheme : lightNavigationTheme}>
-          {children}
-        </NavigationContainer>
+        <SafeAreaProvider>
+          <StatusBar barStyle={statusBarContent} />
+          <NavigationContainer theme={isDark ? darkNavigationTheme : lightNavigationTheme}>
+            {children}
+          </NavigationContainer>
+        </SafeAreaProvider>
       </UserContextProvider>
     </QueryClientProvider>
   );

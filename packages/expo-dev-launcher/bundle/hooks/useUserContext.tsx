@@ -18,13 +18,13 @@ export function UserContextProvider(props: React.PropsWithChildren<any>) {
     let onLogin;
     let onLogout;
 
-    if (isDevMenuAvailable) {
-      onLogin = addUserLoginListener(() => setIsUserLoggedIn(true));
-      onLogout = addUserLogoutListener(() => setIsUserLoggedIn(false));
-      isLoggedInAsync().then((isUserLogin) => {
-        setIsUserLoggedIn(isUserLogin);
-      });
-    }
+    // if (isDevMenuAvailable) {
+    //   onLogin = addUserLoginListener(() => setIsUserLoggedIn(true));
+    //   onLogout = addUserLogoutListener(() => setIsUserLoggedIn(false));
+    //   isLoggedInAsync().then((isUserLogin) => {
+    //     setIsUserLoggedIn(isUserLogin);
+    //   });
+    // }
 
     return () => {
       onLogin?.remove();

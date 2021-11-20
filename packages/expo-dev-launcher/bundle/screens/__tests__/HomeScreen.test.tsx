@@ -20,7 +20,6 @@ const textInputToggleRegex = /enter url manually/i;
 
 test('displays instructions on starting packager when none are found', async () => {
   const { getByText } = await renderHomeScreen();
-
   await waitFor(() => getByText(packagerInstructionsRegex));
 });
 
@@ -38,11 +37,21 @@ test('fetching local packagers on mount', async () => {
     source: 'test',
   };
 
-  mockGetPackagersResponse([fakeLocalPackager]);
+  const fakeLocalPackager2: Packager = {
+    url: 'hello',
+    description: 'fakePackagerDescription2',
+    hideImage: false,
+    source: 'test',
+  };
+
+  mockGetPackagersResponse([fakeLocalPackager, fakeLocalPackager2]);
+
+  expect(() => getByText(fakeLocalPackager.description)).toThrow();
 
   const { getByText } = await renderHomeScreen();
 
   await waitFor(() => getByText(fakeLocalPackager.description));
+  await waitFor(() => getByText(fakeLocalPackager2.description));
 });
 
 test('refetching local packagers on button press', async () => {

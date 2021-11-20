@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ScrollView } from 'react-native';
 
 import * as DevLauncher from '../DevLauncherInternal';
+import { AppHeader } from '../components/redesign/AppHeader';
 import { FetchLocalPackagersRow } from '../components/redesign/FetchLocalPackagersRow';
 import { LocalPackagersList } from '../components/redesign/LocalPackagersList';
 import { TerminalIcon } from '../components/redesign/TerminalIcon';
@@ -33,6 +34,10 @@ export function HomeScreen({ refetchPollAmount = 5, refetchPollInterval = 1000 }
 
   return (
     <ScrollView>
+      <View bg="default">
+        <AppHeader title="Form Duo" subtitle="Development App" />
+      </View>
+
       <View py="large">
         <Row px="medium" align="center">
           <View px="small">

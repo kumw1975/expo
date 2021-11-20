@@ -11,6 +11,11 @@ export const View = create(RNView, {
       '0': { flex: 0 },
     },
 
+    shrink: {
+      '1': { flexShrink: 1 },
+      '0': { flexShrink: 0 },
+    },
+
     bg: {
       default: { backgroundColor: lightTheme.background.default },
       secondary: { backgroundColor: lightTheme.background.secondary },
@@ -42,12 +47,16 @@ export const View = create(RNView, {
       micro: { width: iconSize.micro },
       tiny: { width: iconSize.tiny },
       small: { width: iconSize.small },
+      medium: { width: iconSize.regular },
+      large: { width: iconSize.large },
     },
 
     height: {
       micro: { height: iconSize.micro },
       tiny: { height: iconSize.tiny },
       small: { height: iconSize.small },
+      medium: { height: iconSize.regular },
+      large: { height: iconSize.large },
     },
 
     ...padding,

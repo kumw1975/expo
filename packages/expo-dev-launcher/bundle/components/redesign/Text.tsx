@@ -18,7 +18,7 @@ export const Heading = create(RNText, {
     size: {
       small: {
         fontSize: 18,
-        lineHeight: 24,
+        lineHeight: 20,
       },
       medium: {
         fontSize: 22,
@@ -47,6 +47,7 @@ export const Heading = create(RNText, {
       warning: { color: lightTheme.text.warning },
       success: { color: lightTheme.text.success },
       secondary: { color: lightTheme.text.secondary },
+      primary: { color: lightTheme.button.primary.background },
     },
   },
 
@@ -61,6 +62,7 @@ export const Heading = create(RNText, {
         warning: { color: darkTheme.text.warning },
         success: { color: darkTheme.text.success },
         secondary: { color: darkTheme.text.secondary },
+        primary: { color: darkTheme.button.primary.background },
       },
     },
   },
@@ -93,8 +95,12 @@ export const Text = create(RNText, {
       },
       large: {
         fontSize: 18,
-        lineHeight: 22,
+        lineHeight: 24,
       },
+    },
+
+    leading: {
+      large: { lineHeight: 18 },
     },
 
     type: {
@@ -117,6 +123,7 @@ export const Text = create(RNText, {
 
     color: {
       secondary: { color: lightTheme.text.secondary },
+      primary: { color: lightTheme.button.primary.background },
     },
 
     button: {
@@ -139,6 +146,7 @@ export const Text = create(RNText, {
         warning: { color: darkTheme.text.warning },
         success: { color: darkTheme.text.success },
         secondary: { color: darkTheme.text.secondary },
+        primary: { color: darkTheme.button.primary.background },
       },
 
       button: {
